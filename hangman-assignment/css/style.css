@@ -2,22 +2,55 @@
 
 *  {
     box-sizing: border-box;
+    font-family: 'Eater', cursive;
 }
 
 body {
     width: 100vw;
-    height: 100vh;
+    height: 80vh;
     display: flex;
     justify-content: center;
+    align-items: center;
     background-color: #7349AC;
+    position: relative;
 }
+figure {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.letterContainer {
+   position: absolute;
+   left: 70px;
+   top: 70px;
 
-.letters {
+}
+.word {
+    margin-top: 50px;
+}
+.letters, p {
     font-family: 'Eater', cursive;
     font-size: 3em;
     letter-spacing: 8px;
     color: #fa6701;
     animation: flicker 5s linear infinite;
+}
+.inputContainer {
+    font-size: 2rem;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    text-align: center;
+}
+p {
+    font-size: 1.5em;
+}
+#usedLetters {
+    font-size: 1.5em;
+    color: darkred;
 }
 
 .wrapper {
@@ -68,6 +101,7 @@ body {
     justify-content: space-around;
     flex-wrap: wrap;
 }
+
 
 .left-eye, .right-eye {
     width: 20px;
@@ -142,6 +176,65 @@ body {
     border-radius: 100%;
     background-color: #000000;
     animation: movingShadow 4s ease infinite;
+}
+
+.input-field {
+    --b: 3px;   
+    --s: .45em;
+    --color: #373B44;
+    width: 19rem;
+    height: 5rem;
+    margin-bottom: 1rem;
+    color: var(--color);
+    --_p: var(--s);
+    background:
+        conic-gradient(from 90deg at var(--b) var(--b),#0000 90deg,var(--color) 0)
+        var(--_p) var(--_p)/calc(100% - var(--b) - 2*var(--_p)) calc(100% - var(--b) - 2*var(--_p));
+    transition: .3s linear, color 0s, background-color 0s;
+    outline: var(--b) solid #0000;
+    outline-offset: .6em;
+    font-size: 16px;
+    border: 0;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    font-size: 25px;
+    text-align: center;
+}
+
+#enter-btn, #retry-btn {
+    width: 100%;
+    --b: 3px;   
+    --s: .45em;
+    --color: #373B44;
+    
+    padding: calc(.5em + var(--s)) calc(.9em + var(--s));
+    color: var(--color);
+    --_p: var(--s);
+    background:
+        conic-gradient(from 90deg at var(--b) var(--b),#0000 90deg,var(--color) 0)
+        var(--_p) var(--_p)/calc(100% - var(--b) - 2*var(--_p)) calc(100% - var(--b) - 2*var(--_p));
+    transition: .3s linear, color 0s, background-color 0s;
+    outline: var(--b) solid #0000;
+    outline-offset: .6em;
+    font-size: 16px;
+
+    border: 0;
+
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+#enter-btn, #retry-btn:hover,
+#enter-btn, #retry-btn:focus-visible {
+    --_p: 0px;
+    outline-color: var(--color);
+    outline-offset: .05em;
+}
+#enter-btn, #retry-btn:active {
+    background: var(--color);
+    color: #fff;
 }
 
 @keyframes float {

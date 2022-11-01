@@ -1,77 +1,93 @@
+parts = document.querySelector('figure');
+wordSpace = document.getElementById("word");
+retryBtn = document.getElementById("retry-btn");
+btn = document.getElementById("enter-btn");
+ltrs = document.getElementById("usedLetters");
+inputLabel = document.getElementById("label");
+tries = document.getElementById("tries");
 
- parts = document.querySelector('figure');
- wordSpace = document.getElementById("word");
+const usePart = ["scaffold", "head", "body", "arms", "legs"];
+const words = ["banana", "orange", "kiwi", "lemon", "pear"];
+let correctWord = "";
+let guessedLetter = [];
+let removedParts = [];
+let triesRemaining = 3;
 
- const usePart = ["scaffold", "body", "head", "arms", "legs"];
- const words = ["banana", "orange", "kiwi", "lemon", "pear"];
+retryBtn.hidden = true;
 
- function Wrong() {
-    parts.classList.add(usePart[0]);
-    usePart.shift();
-  
-    if (usePart[0] == undefined) {
-      parts.innerHTML = "<h1>YOU LOST!<h1>";
-    }
+function Wrong() {
+   parts.classList.add(usePart[0]);
+   removedParts.unshift(usePart.shift());
+   triesRemaining--;
+   tries.innerHTML = triesRemaining;
+ 
+   if (usePart[0] == undefined) {
+    wordSpace.innerHTML = "<h1>YOU LOST!<h1>";
+    btn.hidden = true;
+    retryBtn.hidden = false;
+   }
+}
+
+function getText(){
+  let inputField = document.getElementById("textInput").value;
+  document.getElementById("textInput").value = "";
+  return inputField;
+}
+
+function generateWord() {
+  let number = Math.floor(Math.random() * words.length);
+  for (let index = 0; index < words[number].length; index++) {
+    guessedLetter.push("_ ");  
+  }
+  for (let index = 0; index < guessedLetter.length; index++) {
+    correctWord += guessedLetter[index];
   }
 
-  let correctWord = "";
-  let guessedLetter = [];
+  wordSpace.innerHTML = `
+  <h1>${correctWord}</h1>`;
+  return words[number];
+}
 
-  function generateWord() {
-    
-    let number = Math.floor(Math.random() * words.length);
-    for (let index = 0; index < words[number].length; index++) {
-        guessedLetter.push("*");  
-    }
-    console.log(guessedLetter);
-    for (let index = 0; index < guessedLetter.length; index++) {
-        correctWord += guessedLetter[index];
-    }
-    
-    wordSpace.innerHTML = `
-    <h1>${correctWord}</h1>`;
-    
-    return words[number];
-  }
+function restart() {
+  location.reload();
+}
 
-  next = true;
-  let randomWord = generateWord();
-  
+btn.addEventListener("click", gameEngine)
+retryBtn.addEventListener("click", restart)
+randomWord = generateWord();
+let usedLetters = "";
+
 function gameEngine() {
-    
-    let guess = prompt("guess a letter");
-    
-    if (guess.length == 1) {
-          for (let index = 0; index < randomWord.length; index++) {
-            
-              if (guess == randomWord[index]) {
-                  guessedLetter[index] = guess;
-                  next = true; 
-              }
-              else if (index == (randomWord.length -1)) {
-                Wrong()
-              }
-        
-            
-              
-          }
+  guess = getText();
+  if (guess.length == 1) {
+
+    usedLetters+= guess;
+    ltrs.innerHTML = usedLetters;
+
+    if (randomWord.includes(guess) == false) {
+      Wrong()
+    }else {
+      for (let index = 0; index < randomWord.length; index++) {        
+        if (guess == randomWord[index]) {
+          guessedLetter[index] = guess;
           correctWord = "";
+
           for (let index = 0; index < guessedLetter.length; index++) {
             correctWord += guessedLetter[index];
           }
           wordSpace.innerHTML = `
           <h1>${correctWord}</h1>`;
-    }
-    // gameEngine()
+            
+          if (guessedLetter.includes("_ ") == false) {
+              wordSpace.innerHTML = "<h1>YOU WON!<h1>";
+              btn.hidden = true;
+              retryBtn.hidden = false;
+          }
+            
+        }       
+      }
+    }     
+  }else {
+    inputLabel.innerHTML = "Enter a single letter, stupid";
+  }
 }
-
-gameEngine()
-  
-  
-
-    // let rightWord = [];
-    // let rightLetter = '';
-    // for (let x=0; x < rightWord.length; x++) {
-    //     if (rightLetter === ) {
-    // }
-    // }
