@@ -2,42 +2,58 @@ parts = document.querySelector('figure');
 wordSpace = document.getElementById("word");
 retryBtn = document.getElementById("retry-btn");
 btn = document.getElementById("enter-btn");
-ltrs = document.getElementById("usedLetters");
+usedLettersSpace = document.getElementById("usedLetters");
 inputLabel = document.getElementById("label");
 tries = document.getElementById("tries");
+mainScreen = document.querySelector("figure");
 
-const usePart = ["scaffold", "head", "body", "arms", "legs"];
+const bodyPart = ["scaffold", "head", "body", "arms", "legs"];
 const words = ["banana", "orange", "kiwi", "lemon", "pear"];
+
+timer = document.getElementById("timer");
+let startTime = 60;
 let correctWord = "";
+let triesRemaining = bodyPart.length;
 let guessedLetter = [];
-let removedParts = [];
-let triesRemaining = 3;
 
 retryBtn.hidden = true;
 
+function countDown() {
+  timer.innerHTML = "Time left: " + startTime;
+  if (startTime > 0) {
+    startTime--;
+  }
+  else {
+    Wrong();
+  }
+}
+
 function Wrong() {
-   parts.classList.add(usePart[0]);
-   removedParts.unshift(usePart.shift());
-   triesRemaining--;
-   tries.innerHTML = triesRemaining;
- 
-   if (usePart[0] == undefined) {
-    wordSpace.innerHTML = "<h1>YOU LOST!<h1>";
-    btn.hidden = true;
+   parts.classList.add(bodyPart[0]);
+   bodyPart.shift();
+   if (triesRemaining > 0){
+    triesRemaining--;
+   }
+   tries.innerHTML = `Tries left:  ${triesRemaining}`
+
+   if (triesRemaining === 0) {
+    mainScreen.innerHTML = 
+    `<h2>YOU LOST!</h2> 
+    <p> correct word: ${randomWord} </p>`;
     retryBtn.hidden = false;
    }
 }
 
-function getText(){
-  let inputField = document.getElementById("textInput").value;
-  document.getElementById("textInput").value = "";
-  return inputField;
+function restart() {
+  location.reload();
 }
+
+retryBtn.addEventListener("click", restart);
 
 function generateWord() {
   let number = Math.floor(Math.random() * words.length);
   for (let index = 0; index < words[number].length; index++) {
-    guessedLetter.push("_ ");  
+    guessedLetter.push(" _ ");  
   }
   for (let index = 0; index < guessedLetter.length; index++) {
     correctWord += guessedLetter[index];
@@ -48,28 +64,33 @@ function generateWord() {
   return words[number];
 }
 
-function restart() {
-  location.reload();
-}
-
-btn.addEventListener("click", gameEngine)
-retryBtn.addEventListener("click", restart)
 randomWord = generateWord();
 let usedLetters = "";
 
+function getText(){
+  let inputField = document.getElementById("textInput").value;
+  document.getElementById("textInput").value = "";
+  return inputField;
+}
+
+btn.addEventListener("click", gameEngine);
+
 function gameEngine() {
-  guess = getText();
-  if (guess.length == 1) {
+  choosenLetter = getText();
 
-    usedLetters+= guess;
-    ltrs.innerHTML = usedLetters;
+  if (choosenLetter.length == 1) {
+    if (startTime == 60) {
+      setInterval(countDown, 1000);
+    }
+    usedLetters+= choosenLetter;
+    usedLettersSpace.innerHTML = usedLetters;
 
-    if (randomWord.includes(guess) == false) {
+    if (randomWord.includes(choosenLetter) == false) {
       Wrong()
     }else {
       for (let index = 0; index < randomWord.length; index++) {        
-        if (guess == randomWord[index]) {
-          guessedLetter[index] = guess;
+        if (choosenLetter == randomWord[index]) {
+          guessedLetter[index] = choosenLetter;
           correctWord = "";
 
           for (let index = 0; index < guessedLetter.length; index++) {
@@ -78,16 +99,16 @@ function gameEngine() {
           wordSpace.innerHTML = `
           <h1>${correctWord}</h1>`;
             
-          if (guessedLetter.includes("_ ") == false) {
-              wordSpace.innerHTML = "<h1>YOU WON!<h1>";
-              btn.hidden = true;
+          if (guessedLetter.includes(" _ ") == false) {
+              mainScreen.innerHTML = "<h2>YOU WON!<h2>";
               retryBtn.hidden = false;
-          }
-            
+          }  
         }       
       }
     }     
-  }else {
+  }
+  else {
     inputLabel.innerHTML = "Enter a single letter, stupid";
   }
 }
+

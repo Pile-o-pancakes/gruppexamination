@@ -3,6 +3,7 @@
 *  {
     box-sizing: border-box;
     font-family: 'Eater', cursive;
+    margin: 0;
 }
 
 body {
@@ -14,6 +15,9 @@ body {
     background-color: #7349AC;
     position: relative;
 }
+h2 {
+    font-size: 100px;
+}
 figure {
     display:flex;
     justify-content: center;
@@ -22,14 +26,15 @@ figure {
 }
 .letterContainer {
    position: absolute;
-   left: 70px;
-   top: 70px;
+   left: 200px;
+   top: 200px;
 
 }
 .word {
-    margin-top: 50px;
+    margin-top: 5px;
+    margin-bottom: -10;
 }
-.letters, p {
+.letters {
     font-family: 'Eater', cursive;
     font-size: 3em;
     letter-spacing: 8px;
@@ -44,6 +49,9 @@ figure {
     margin-bottom: 15px;
     margin-top: 15px;
     text-align: center;
+    position: absolute;
+    left: 190px;
+    top: 540px;
 }
 p {
     font-size: 1.5em;
@@ -55,6 +63,7 @@ p {
 
 .wrapper {
     max-width: 1000px;
+    min-height: 800px ;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -76,6 +85,7 @@ p {
     position: relative;
     width: 160px;
     height: 200px;
+    margin-top: -200px;
 }
   
 .ghost-body {
