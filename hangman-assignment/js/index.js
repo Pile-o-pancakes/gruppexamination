@@ -6,6 +6,7 @@ usedLettersSpace = document.getElementById("usedLetters");
 inputLabel = document.getElementById("label");
 tries = document.getElementById("tries");
 mainScreen = document.querySelector("figure");
+ghostFace = document.querySelector(".mouth");
 
 const bodyPart = ["scaffold", "head", "body", "arms", "legs"];
 const words = ["banana", "orange", "kiwi", "lemon", "pear"];
@@ -13,7 +14,6 @@ const words = ["banana", "orange", "kiwi", "lemon", "pear"];
 timer = document.getElementById("timer");
 let startTime = 60;
 let correctWord = "";
-let triesRemaining = bodyPart.length;
 let guessedLetter = [];
 
 retryBtn.hidden = true;
@@ -30,6 +30,7 @@ function countDown() {
 
 function Wrong() {
    parts.classList.add(bodyPart[0]);
+   let triesRemaining = bodyPart.length;
    bodyPart.shift();
    if (triesRemaining > 0){
     triesRemaining--;
@@ -37,6 +38,8 @@ function Wrong() {
    tries.innerHTML = `Tries left:  ${triesRemaining}`
 
    if (triesRemaining === 0) {
+    ghostFace.classList.remove("mouth");
+    ghostFace.classList.add("mouth2");
     mainScreen.innerHTML = 
     `<h2>YOU LOST!</h2> 
     <p> correct word: ${randomWord} </p>`;
@@ -64,9 +67,6 @@ function generateWord() {
   return words[number];
 }
 
-randomWord = generateWord();
-let usedLetters = "";
-
 function getText(){
   let inputField = document.getElementById("textInput").value;
   document.getElementById("textInput").value = "";
@@ -75,22 +75,26 @@ function getText(){
 
 btn.addEventListener("click", gameEngine);
 
-function gameEngine() {
-  choosenLetter = getText();
+randomWord = generateWord();
+let usedLetters = "";
 
-  if (choosenLetter.length == 1) {
+function gameEngine() {
+  
+  chosenLetter = getText();
+
+  if (chosenLetter.length == 1) {
     if (startTime == 60) {
       setInterval(countDown, 1000);
     }
-    usedLetters+= choosenLetter;
+    usedLetters+= chosenLetter;
     usedLettersSpace.innerHTML = usedLetters;
 
-    if (randomWord.includes(choosenLetter) == false) {
+    if (randomWord.includes(chosenLetter) == false) {
       Wrong()
     }else {
       for (let index = 0; index < randomWord.length; index++) {        
-        if (choosenLetter == randomWord[index]) {
-          guessedLetter[index] = choosenLetter;
+        if (chosenLetter == randomWord[index]) {
+          guessedLetter[index] = chosenLetter;
           correctWord = "";
 
           for (let index = 0; index < guessedLetter.length; index++) {

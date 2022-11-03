@@ -128,6 +128,14 @@ p {
     border-radius: 100%;
     margin-top: 0.2rem;
 }
+.mouth2 {
+
+    width: 32px;
+    height: 20px;
+    border-top: 12px solid #000000;
+    border-radius: 100%;
+    margin-top: 0.2rem;
+}
 
 .left-arm, .right-arm {
     width: 80px;
